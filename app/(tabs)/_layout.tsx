@@ -21,13 +21,25 @@ const _layout = () => {
         <Text className="text-secondary text-base font-semibold">{name}</Text>
       </ImageBackground>
     ) : (
-      <View className="flex flex-row w-full flex-1 min-w-[90px] min-h-10 mt-4 rounded-full justify-center items-center gap-1">
-        <Image source={icon} tintColor={"#151312"} className="size-5" />
-        <Text className="text-secondary text-base font-semibold">{name}</Text>
+      <View className=" flex flex-row w-full flex-1 min-w-[90px] min-h-10 mt-4 rounded-full justify-center items-center gap-1">
+        <Image source={icon} tintColor={"#A8B5DB"} className="size-5" />
+        {/* <Text className="text-base font-semibold text-[#A8B5DB]">{name}</Text> */}
       </View>
     );
   return (
-    <Tabs screenOptions={{ headerShown: false, tabBarShowLabel: false }}>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: "#0f0d23",
+          position: "absolute",
+          borderColor: "#0f0d23",
+          borderWidth: 1,
+        },
+        tabBarItemStyle: { justifyContent: "center", alignItems: "center" },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
