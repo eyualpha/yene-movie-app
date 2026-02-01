@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import MovieCard from "@/components/movie-card";
 import SearchBar from "@/components/search-bar";
 import { icons } from "@/constants/icons";
@@ -12,15 +13,22 @@ export default function Home() {
 
   const {
     data: movies,
-    loading: moviesLoading,
-    error: moviesError,
-  } = useFetch(() =>
-    fetchMovies({
-      query: "tom and jerry",
-    }),
+    loading,
+    error,
+    refetch,
+  } = useFetch(
+    () =>
+      fetchMovies({
+        query: "",
+      }),
+    false,
   );
 
-  if (moviesLoading) {
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  if (loading) {
     return (
       <View className="flex-1 bg-primary items-center justify-center">
         <ActivityIndicator size="large" color="#fff" />
@@ -28,7 +36,7 @@ export default function Home() {
     );
   }
 
-  if (moviesError) {
+  if (error) {
     return (
       <View className="flex-1 bg-primary items-center justify-center">
         <Text className="text-white">Something went wrong</Text>
@@ -41,11 +49,17 @@ export default function Home() {
       <Image source={images.bg} className="w-full z-0 absolute" />
 
       <FlatList
-        data={movies}
+        data={movies || []}
         numColumns={3}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 15 }}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          paddingHorizontal: 10,
+        }}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+        }}
         renderItem={({ item }) => <MovieCard {...item} />}
         ListHeaderComponent={
           <View>

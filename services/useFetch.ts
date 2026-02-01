@@ -1,38 +1,36 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const useFetch = <T>(
   fetchFunction: () => Promise<T>,
   autoFetch: boolean = true
 ) => {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState<boolean>(autoFetch);
+  const [loading, setLoading] = useState(autoFetch);
   const [error, setError] = useState<Error | null>(null);
+
+  // Keep latest fetch function without triggering effects
+  const fetchRef = useRef(fetchFunction);
+  fetchRef.current = fetchFunction;
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const result = await fetchFunction();
+      const result = await fetchRef.current();
       setData(result);
     } catch (err) {
       setError(err as Error);
     } finally {
       setLoading(false);
     }
-  }, [fetchFunction]);
+  }, []);
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setData(null);
     setError(null);
-    setLoading(autoFetch);
-  };
-
-  useEffect(() => {
-    if (autoFetch) {
-      fetchData();
-    }
-  }, [autoFetch, fetchData]);
+    setLoading(false);
+  }, []);
 
   return {
     data,

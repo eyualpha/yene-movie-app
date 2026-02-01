@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import MovieCard from "@/components/movie-card";
 import SearchBar from "@/components/search-bar";
@@ -8,19 +8,18 @@ import useFetch from "@/services/useFetch";
 const Search = () => {
   const [query, setQuery] = useState("");
 
-  const fetchMoviesByQuery = useCallback(() => fetchMovies({ query }), [query]);
-
   const {
     data: movies,
     loading,
     error,
     refetch,
     reset,
-  } = useFetch(fetchMoviesByQuery, false);
+  } = useFetch(() => fetchMovies({ query }), false);
 
   useEffect(() => {
+    const trimmed = query.trim();
+
     const timeoutId = setTimeout(() => {
-      const trimmed = query.trim();
       if (trimmed.length > 0) {
         refetch();
       } else {
@@ -38,6 +37,10 @@ const Search = () => {
         onChangeText={setQuery}
         placeholder="Search for a movie"
       />
+
+      <Text className="text-white mt-2">
+        {query ? `Results for "${query}"` : ""}
+      </Text>
 
       {loading && (
         <View className="mt-10 items-center justify-center">
