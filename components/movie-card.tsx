@@ -11,8 +11,8 @@ const MovieCard = ({
 }: Movie) => {
   return (
     <Link href={`/movie/${id}`} asChild>
-      <TouchableOpacity className="w-40 mr-4 mb-6">
-        <View className="w-full h-48 rounded-lg overflow-hidden mb-2">
+      <TouchableOpacity className="w-[30%] mx-2 mb-5">
+        <View className="w-full h-40 rounded-lg overflow-hidden mb-2">
           <Image
             source={{
               uri: `https://image.tmdb.org/t/p/w500${poster_path}`,

@@ -1,15 +1,29 @@
-import { View, Text, Image, TextInput } from "react-native";
+import { View, Image, TextInput, Pressable } from "react-native";
 import React from "react";
 import { icons } from "@/constants/icons";
 
 interface SearchBarProps {
-  onPress: () => void;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  onPressIn?: () => void;
+  editable?: boolean;
   placeholder?: string;
 }
 
-const SearchBar = ({ onPress, placeholder }: SearchBarProps) => {
+const SearchBar = ({
+  value,
+  onChangeText,
+  onPressIn,
+  editable = true,
+  placeholder,
+}: SearchBarProps) => {
+  const Container = onPressIn && !editable ? Pressable : View;
+
   return (
-    <View className="flex-row items-center bg-dark-200 rounded-full px-5 py-4 border-1 border-dark-400">
+    <Container
+      className="flex-row items-center bg-dark-200 rounded-full px-5 py-2 border border-1 border-dark-100"
+      onPressIn={onPressIn}
+    >
       <Image
         source={icons.search}
         className="size-5 tint-dark-400"
@@ -19,11 +33,14 @@ const SearchBar = ({ onPress, placeholder }: SearchBarProps) => {
         placeholder={placeholder}
         placeholderTextColor="#a8b5db"
         className="flex-1 text-white ml-3"
-        value=""
-        onChangeText={() => {}}
-        onPress={onPress}
+        value={value}
+        onChangeText={onChangeText}
+        onPressIn={onPressIn}
+        editable={editable}
+        autoCorrect={false}
+        autoCapitalize="none"
       />
-    </View>
+    </Container>
   );
 };
 

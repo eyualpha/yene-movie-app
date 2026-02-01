@@ -1,16 +1,26 @@
 export const TMDB_CONFIG = {
     BASE_URL: 'https://api.themoviedb.org/3',
     API_KEY: process.env.EXPO_PUBLIC_MOVIE_API_KEY || '',
-    headers:{
-        accept:"application/json",
-        Authorization:`Bearer ${process.env.EXPO_PUBLIC_MOVIE_API_KEY || ''}`
+    get headers() {
+        const isV4Token = this.API_KEY.startsWith('eyJ');
+        return {
+            accept: 'application/json',
+            ...(isV4Token ? { Authorization: `Bearer ${this.API_KEY}` } : {}),
+        };
     }
 }
 
 export const fetchMovies = async ({ query}: { query: string }) => {
-    const endpoint = query?
-        `${TMDB_CONFIG.BASE_URL}/discover/movie?query=${encodeURIComponent(query)}`:
-        `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
+    if (!TMDB_CONFIG.API_KEY) {
+        throw new Error('Missing TMDB API key');
+    }
+
+    const apiKeyParam = `api_key=${TMDB_CONFIG.API_KEY}`;
+    const searchQuery = query.trim();
+
+    const endpoint = searchQuery
+        ? `${TMDB_CONFIG.BASE_URL}/search/movie?${apiKeyParam}&query=${encodeURIComponent(searchQuery)}&include_adult=false&language=en-US&page=1`
+        : `${TMDB_CONFIG.BASE_URL}/movie/popular?${apiKeyParam}&language=en-US&page=1`;
     try {
         const response = await fetch(endpoint, {
             method: 'GET',
