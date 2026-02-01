@@ -15,13 +15,13 @@ const _layout = () => {
     focused ? (
       <ImageBackground
         source={images.highlight}
-        className="flex flex-row w-full flex-1 min-w-[90px] min-h-10 mt-4 rounded-full justify-center items-center gap-1"
+        className="flex flex-row w-full flex-1 min-w-[80px] min-h-9 mt-3 rounded-full justify-center items-center gap-1"
       >
         <Image source={icon} tintColor={"#151312"} className="size-5" />
         <Text className="text-secondary text-base font-semibold">{name}</Text>
       </ImageBackground>
     ) : (
-      <View className=" flex flex-row w-full flex-1 min-w-[90px] min-h-10 mt-4 rounded-full justify-center items-center gap-1">
+      <View className=" flex flex-row w-full flex-1 min-w-[80px] min-h-9 mt-3 rounded-full justify-center items-center gap-1">
         <Image source={icon} tintColor={"#A8B5DB"} className="size-5" />
         {/* <Text className="text-base font-semibold text-[#A8B5DB]">{name}</Text> */}
       </View>
