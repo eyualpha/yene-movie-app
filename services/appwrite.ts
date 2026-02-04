@@ -35,6 +35,7 @@ export const updateSearchCount = async (query: string, movie?: Movie) => {
         }
       );
     } else {
+      // Otherwise → create new search record
       await database.createDocument(
         DATABASE_ID,
         COLLECTION_ID,
