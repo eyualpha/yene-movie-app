@@ -53,3 +53,33 @@ export const updateSearchCount = async (query: string, movie?: Movie) => {
     console.error("Failed to update search count:", error);
   }
 };
+
+export const fetchTrendingMovies = async (): Promise<Movie[]> => {
+  try {
+    const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
+      Query.orderDesc("count"),
+      Query.limit(30),
+    ]);
+
+    return result.documents.map((doc: any) => ({
+      id: doc.movie_id,
+      title: doc.title,
+      adult: false,
+      backdrop_path: doc.poster_url ?? "",
+      genre_ids: [],
+      original_language: "en",
+      original_title: doc.title,
+      overview: "",
+      popularity: doc.count ?? 0,
+      poster_path: doc.poster_url ?? "",
+      release_date: "",
+      video: false,
+      vote_average: 0,
+      vote_count: doc.count ?? 0,
+      isFavorite: false,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch trending movies:", error);
+    return [];
+  }
+};

@@ -169,7 +169,7 @@ const Details = () => {
       </ScrollView>
 
       <TouchableOpacity
-        className="absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50"
+        className="absolute top-20 left-0 right-0 mx-5 bg-accent rounded-lg py-2 px-2 flex flex-row items-center justify-center z-50 bg-black/70 w-[30%]"
         onPress={router.back}
       >
         <Image
